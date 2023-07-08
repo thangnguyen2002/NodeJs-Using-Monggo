@@ -17,13 +17,21 @@ const customerSchema = new mongoose.Schema( //create a new Schema
         image: String,
         description: String
     },
-    { timestamps: true } //createdAt, updateAt
+    {
+        timestamps: true, //createdAt, updateAt
+        // statics: {
+        //     findByThang(name) {
+        //         return this.find({ name: new RegExp(name, 'i') });
+        //     }
+        // }
+    }
 );
 
 customerSchema.plugin(mongoose_delete, { overrideMethods: true });
 //soft delete (ko thuc su delete khoi db, no them truong deleted true or false)
 //khi delete 1 customer -> them truong deleted: true, khi query se ko lay n~ customer nay
 //muon lay dc customer nay -> vao db doi deleted: false
+//neu dung n~ method cua moongoose se xoa hoan toan khoi db nen ko restore dc, nen ta dung moongoose delete plugin
 
 // Lưu hình dạng đấy vào db, 'Kitten' sẽ là tên collection (table) của database
 const Customer = mongoose.model('customer', customerSchema); //define a model, tạo biến Kitten để hứng model collection(table) tên Kitten

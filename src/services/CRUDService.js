@@ -10,7 +10,8 @@ const getAllUsers = async () => {
 
 const getUserById = async (userId) => {
     // console.log('>>>id: ', userId);
-    let user = await User.findOne({ _id: userId }).exec(); // _id trong mongoose co _ duoi
+    let user = await User.findOne({ _id: userId }).exec();
+    // _id trong mongoose co _ duoi, exect() to make sure this function run as a Promise async await
     // console.log('>>a: ', user);
     return user
 }

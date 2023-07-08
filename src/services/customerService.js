@@ -1,4 +1,5 @@
 const Customer = require('../models/customer')
+const aqp = require('api-query-params');
 
 module.exports = {
     createCustomerService: async (customerData) => {
@@ -32,9 +33,32 @@ module.exports = {
         }
     },
 
-    getAllCustomersService: async () => {
+    getAllCustomersService: async (page, limit, queryString) => {
         try {
-            let result = await Customer.find({})
+            let result = null
+            if (page && limit) {
+                let offset = (page - 1) * limit
+
+                const { filter } = aqp(queryString) //day la thu vien lay dynamic query dua theo url query string
+                // console.log('>>>filter: ', filter); //{ page: 1, name: 'thang2' }
+                delete filter.page
+                //phai delete truong (field) page vi neu cho vao find() de filter se ko dung vi ta chi loc theo exact name la 'thang2'
+                console.log('>>>filter: ', filter);
+
+                //filter ko co page nen delete page de ko anh huong dkien find()
+                //  va limit thi ko nam trong field nen log se ko hien
+                //filter chi lay tuy vao dkien toan tu truyen vao tren url query
+
+                // vdu theo toan tu $in: http://localhost:8080/api/v1/customers?page=1&limit=2&name=thang2&address=hanoi,hcm
+                //loc theo name la thang2 va address la hanoi hoac hcm
+                //theo $
+
+                result = await Customer.find(filter).limit(limit).skip(offset).exec()
+                //exec() dam bao chay dung nhu 1 promise async await
+
+            } else {
+                result = await Customer.find({})
+            }
             return result
 
         } catch (error) {
@@ -57,13 +81,30 @@ module.exports = {
 
     deleteACustomersService: async (cusId) => {
         try {
-            //deleteById la static method cua thu vien mongoose delete (based on soft delete)
-            //static method tuc la co the thao tac truc tiep vs model thay vi dun` tu khoa new nhu save()
+            //deleteById la static method cua thu vien mongoose delete plugin (based on soft delete)
+            //static method tuc la co the thao tac truc tiep vs model thay vi dung` tu khoa new nhu save()
+            //static method la method co the tu dinh nghia va tai su dung
             let result = await Customer.deleteById(cusId)
+            // Customer.findByThang() //static method dc dinh nghia o Schema
             return result
 
         } catch (error) {
             return null
         }
     },
+
+    deleteManyCustomersService: async (cusIdArray) => {
+        try {
+            let result = await Customer.delete({ _id: { $in: cusIdArray } })
+            //xoa _id (luu y _id chu ko phai ten khac id hay j khac ko dung se xoa tat ca chu ko theo dkien), 
+            //toán tử in: $in tuc la lam` n~ gtri trong array, tuc la nhan 1 array, day la dkien xoa
+            // console.log('a: ', { _id: { $in: cusIdArray } });
+            return result
+
+        } catch (error) {
+            return null
+        }
+    },
+
+
 }
