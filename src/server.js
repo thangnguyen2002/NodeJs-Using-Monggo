@@ -4,6 +4,7 @@ const webRoutes = require('./routes/web')
 const apiRoutes = require('./routes/api')
 require('dotenv').config()
 const connection = require('./config/database')
+const { MongoClient } = require('mongodb');
 const User = require('./models/User')
 const fileUpload = require('express-fileupload');
 //thư viện này giúp gửi kèm file (req.files) dựa vào biến image (đặt trong postman) -> req.files.image
@@ -39,7 +40,25 @@ app.use('/api/v1/', apiRoutes);
 // connection to db
 (async () => {
   try {
-    await connection()
+    //Using mongoose
+    // await connection()
+
+    // Using mongoose driver
+    // Connection URL
+    const url = process.env.DB_HOST_WITH_DRIVER;
+    const client = new MongoClient(url);
+
+    // Database Name
+    const dbName = process.env.DB_NAME;
+
+    // Use connect method to connect to the server
+    await client.connect();
+    console.log('Connected successfully to server mongo driver');
+    const db = client.db(dbName);
+    const collection = db.collection('documents');
+
+
+
     app.listen(port, hostname, () => {
       console.log(`Example app listening on ${hostname}:${port}`)
     })
