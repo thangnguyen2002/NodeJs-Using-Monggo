@@ -51,7 +51,8 @@ module.exports = {
 
                 // vdu theo toan tu $in: http://localhost:8080/api/v1/customers?page=1&limit=2&name=thang2&address=hanoi,hcm
                 //loc theo name la thang2 va address la hanoi hoac hcm
-                //theo $
+                //theo $regex: http://localhost:8080/api/v1/customers?page=1&limit=4&name=/thang/&address=hanoi,hcm
+                //loc theo trang 1 limit 4, n~ customer co chua 'thang' trong ten va o hn hoac hcm
 
                 result = await Customer.find(filter).limit(limit).skip(offset).exec()
                 //exec() dam bao chay dung nhu 1 promise async await
