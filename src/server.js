@@ -54,9 +54,12 @@ app.use('/api/v1/', apiRoutes);
     // Use connect method to connect to the server
     await client.connect();
     console.log('Connected successfully to server mongo driver');
-    const db = client.db(dbName);
-    const collection = db.collection('documents');
 
+    const db = client.db(dbName); //chi no biet vao database nao
+    const collection = db.collection('customers'); //vao collection(table) nao
+
+    await collection.insertOne({ name: 'tran huu duc' });
+    await collection.insertOne({ address: 'hoang mai', city: 'hanoi' });
 
 
     app.listen(port, hostname, () => {
