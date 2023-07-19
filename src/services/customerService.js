@@ -11,7 +11,7 @@ module.exports = {
                 phone: customerData.phone,
                 email: customerData.email,
                 description: customerData.description,
-                image: customerData.image //chir lưu đường dẫn ảnh chứ ko lưu tên ảnh vào database
+                image: customerData.image //chi lưu đường dẫn ảnh chứ ko lưu tên ảnh vào database
             })
 
             return result
@@ -46,7 +46,7 @@ module.exports = {
                 console.log('>>>filter: ', filter);
 
                 //filter ko co page nen delete page de ko anh huong dkien find()
-                //  va limit thi ko nam trong field nen log se ko hien
+                //  va limit thi ko nam trong field nen log se ko hien 
                 //filter chi lay tuy vao dkien toan tu truyen vao tren url query
 
                 // vdu theo toan tu $in: http://localhost:8080/api/v1/customers?page=1&limit=2&name=thang2&address=hanoi,hcm
@@ -83,6 +83,7 @@ module.exports = {
     deleteACustomersService: async (cusId) => {
         try {
             //deleteById la static method cua thu vien mongoose delete plugin (based on soft delete)
+            //neu dung deleteOne() cua mongoose se delete khoi database -> mat luon, rat nguy hiem
             //static method tuc la co the thao tac truc tiep vs model thay vi dung` tu khoa new nhu save()
             //static method la method co the tu dinh nghia va tai su dung
             let result = await Customer.deleteById(cusId)

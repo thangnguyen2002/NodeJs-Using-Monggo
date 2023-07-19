@@ -2,6 +2,8 @@ const express = require('express') //commonjs
 const router = express.Router()
 const { getUsersAPI, postCreateUserAPI, putUpdateUserAPI, deleteUserAPI, postUploadSingleFileAPI, postUploadMultiFileAPI } = require('../controllers/apiController')
 const { postCreateCustomer, postCreateManyCustomer, getAllCustomers, putACustomer, deleteACustomer, deleteManyCustomer } = require('../controllers/customerController')
+const { postCreateProject, getAllProjects, putUpdateProject, deleteProject } = require('../controllers/projectController')
+const { postCreateTask, getAllTasks, putUpdateTask, deleteATask } = require('../controllers/taskController')
 // API la cac url, Restful API la viet API theo tieu chuan Rest
 // tieu chuan Rest la chi ro get la lay, post la tao, put la update, delete la xoa
 router.get('/users', getUsersAPI)
@@ -18,6 +20,16 @@ router.get('/customers', getAllCustomers)
 router.put('/customers', putACustomer)
 router.delete('/customers', deleteACustomer)
 router.delete('/customers-many', deleteManyCustomer)
+
+router.post('/projects', postCreateProject)
+router.get('/projects', getAllProjects)
+router.put('/projects', putUpdateProject)
+router.delete('/projects', deleteProject)
+
+router.post('/tasks', postCreateTask)
+router.get('/tasks', getAllTasks)
+router.put('/tasks', putUpdateTask)
+router.delete('/tasks', deleteATask)
 
 // Query string luon dung method get
 router.get('/info', (req, res) => { //query string

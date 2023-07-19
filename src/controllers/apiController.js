@@ -51,7 +51,7 @@ const deleteUserAPI = async (req, res) => {
 
     let result = await User.deleteOne({
         _id: id
-    })
+    }) //deleteOne() se xoa khoi database luon, nen dung deleteById cua soft delete de tranh nguy hiem mat data
 
     return res.status(200).json(
         {
